@@ -1,8 +1,8 @@
-import express from 'express';
+import express from 'express'
 import listEndpoints from 'express-list-endpoints'
-// import authorsRouter from './apis/authors/index.js'
+import blogPostRouter from './apis/blogs/index.js'
 import cors from 'cors'
-
+import { badRequestHandler, unAuthorizedRequestHandler, notFoundHandler, genericErrorHandler } from './errorHandler.js'
 
 const server = express();
 const port = 3001
@@ -11,8 +11,14 @@ server.use(cors())
 server.use(express.json())
 
 
-// server.use("/authors", authorsRouter)
+server.use("/post", blogPostRouter)
 console.table(listEndpoints(server))
+
+server.use(badRequestHandler)
+server.use(unAuthorizedRequestHandler)
+server.use(notFoundHandler)
+server.use(genericErrorHandler)
+
 
 
 server.listen(port, ()=> {
