@@ -1,5 +1,5 @@
 import express from "express";
-import fs from "fs";
+import fs from "fs-extra";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import uniqid from "uniqid";
@@ -19,7 +19,7 @@ const writeBlogs = (content) =>
   fs.writeFileSync(blogsJSONPath, JSON.stringify(content));
 
 // 1. Post blogPost
-blogPostRouter.post("/", (req, res, next) => {
+blogPostRouter.post("/", blogsValidation,  (req, res, next) => {
   try {
     const errorList = validationResult(req);
 
